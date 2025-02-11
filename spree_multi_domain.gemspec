@@ -17,19 +17,19 @@ Gem::Specification.new do |s|
   s.require_path = 'lib'
   s.requirements << 'none'
 
-  version = '~> 3.1.0.beta'
-  s.add_dependency 'spree_core', version
-  s.add_dependency 'spree_backend', version
-  s.add_dependency 'spree_frontend', version
-  s.add_dependency 'spree_api', version
+  version = '3.1.14.rails.5.0'
+  s.add_dependency 'goca-spree-core', version
+  s.add_dependency 'goca-spree-backend', version
+  s.add_dependency 'goca-spree-frontend', version
+  s.add_dependency 'goca-spree-api', version
 
-  s.add_development_dependency 'capybara', '~> 2.4'
-  s.add_development_dependency 'coffee-rails'
+  s.add_development_dependency 'capybara', '~> 2.15.0'
+  s.add_development_dependency 'coffee-rails', '~> 4.1.1'
   s.add_development_dependency 'factory_girl', '~> 4.5'
-  s.add_development_dependency 'ffaker'
+  s.add_development_dependency 'ffaker', '~> 2.2.0'
   s.add_development_dependency 'mysql2'
   s.add_development_dependency 'pg'
-  s.add_development_dependency 'rspec-rails',  '~> 3.4'
+  s.add_development_dependency 'rspec-rails',  '~> 3.5.2'
   s.add_development_dependency 'sass-rails', '~> 5.0.0'
-  s.add_development_dependency 'sqlite3'
+  s.add_development_dependency 'sqlite3', '~> 1.3.13'
 end
