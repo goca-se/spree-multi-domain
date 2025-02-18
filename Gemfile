@@ -7,3 +7,7 @@ gem 'loofah', '~> 2.19.1'
 gem 'rails-html-sanitizer', '~> 1.4.4'
 
 gemspec
+
+group :development do
+  gem 'listen', '~> 3.0.5'
+end
