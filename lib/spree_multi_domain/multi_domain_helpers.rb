@@ -4,7 +4,7 @@ module SpreeMultiDomain
       receiver.send :helper, 'spree/products'
       receiver.send :helper, 'spree/taxons'
 
-      receiver.send :before_filter, :add_current_store_id_to_params
+      receiver.send :before_action, :add_current_store_id_to_params
       receiver.send :helper_method, :current_store
       receiver.send :helper_method, :current_tracker
     end
