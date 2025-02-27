@@ -18,8 +18,8 @@ module SpreeMultiDomain
     config.to_prepare &method(:activate).to_proc
 
     initializer "templates with dynamic layouts" do |app|
-      ActionView::TemplateRenderer.class_eval do
-        def find_layout_with_multi_store(layout, locals, *formats)
+      module StoreLayoutRenderer
+        def find_layout(layout, locals, *formats)
           store_layout = layout
 
           if @view.respond_to?(:current_store) && @view.current_store && !@view.controller.is_a?(Spree::Admin::BaseController)
@@ -31,31 +31,33 @@ module SpreeMultiDomain
           end
 
           begin
-            find_layout_without_multi_store(store_layout, locals, *formats)
+            super(store_layout, locals, *formats)
           rescue ::ActionView::MissingTemplate
-            find_layout_without_multi_store(layout, locals, *formats)
+            super(layout, locals, *formats)
           end
         end
-
-        alias_method_chain :find_layout, :multi_store
       end
+
+      ActionView::TemplateRenderer.prepend(StoreLayoutRenderer)
     end
 
     initializer "current order decoration" do |app|
       require 'spree/core/controller_helpers/order'
-      ::Spree::Core::ControllerHelpers::Order.module_eval do
-        def current_order_with_multi_domain(options = {})
+      
+      module StoreDomainOrder
+        def current_order(options = {})
           options[:create_order_if_necessary] ||= false
-          current_order_without_multi_domain(options)
+          order = super(options)
 
-          if @current_order and current_store and @current_order.store_id != current_store.id
-            @current_order.update_attribute(:store_id, current_store.id)
+          if order && current_store && order.store_id != current_store.id
+            order.update_attribute(:store_id, current_store.id)
           end
 
-          @current_order
+          order
         end
-        alias_method_chain :current_order, :multi_domain
       end
+
+      ::Spree::Core::ControllerHelpers::Order.prepend(StoreDomainOrder)
     end
   end
 end
